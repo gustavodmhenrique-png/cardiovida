@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>Portal Dr. Gustavo Henrique Mendes</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0D2B4E;--blue:#1A5FA8;--teal:#0E9E8A;--teal-light:#E0F5F2;--amber:#F59E0B;--amber-light:#FEF3C7;--rose:#E84444;--rose-light:#FEE2E2;--slate:#F4F7FB;--text:#1C2B3A;--muted:#6B7F95;--border:#DDE5EF;--r:18px;--rs:12px;--sh:0 4px 24px rgba(13,43,78,.08);}
+*{margin:0;padding:0;box-sizing:border-box;}html,body{height:100%;}
+body{font-family:"DM Sans",sans-serif;background:#0D2B4E;color:var(--text);display:flex;align-items:center;justify-content:center;min-height:100vh;}
+.phone{width:100%;max-width:430px;height:100vh;max-height:932px;background:var(--slate);overflow:hidden;display:flex;flex-direction:column;position:relative;}
+@media(min-width:500px){.phone{border-radius:44px;height:90vh;box-shadow:0 0 80px rgba(0,0,0,.4);}}
+.screen{display:none;flex-direction:column;flex:1;overflow:hidden;}
+.screen.active{display:flex;}
+.auth-bg{background:linear-gradient(160deg,#0D2B4E,#1A5FA8 60%,#0E9E8A);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 28px;gap:4px;}
+.alogo{font-size:52px;margin-bottom:4px;}
+.atitle{font-family:"DM Serif Display",serif;font-size:28px;color:white;}
+.asub{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:24px;text-align:center;}
+.acard{background:white;border-radius:22px;padding:24px 20px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+.tabs{display:flex;gap:6px;margin-bottom:16px;}
+.tab{flex:1;padding:9px;border-radius:10px;border:2px solid var(--border);font-family:"DM Sans",sans-serif;font-size:13px;font-weight:600;cursor:pointer;background:white;color:var(--muted);}
+.tab.on{border-color:var(--blue);background:#EBF3FB;color:var(--blue);}
+.aerr{font-size:12px;color:var(--rose);padding:8px 12px;background:var(--rose-light);border-radius:10px;margin-bottom:10px;display:none;}
+.lbl{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;margin-top:12px;}
+.inp{width:100%;padding:11px 13px;border:2px solid var(--border);border-radius:var(--rs);font-family:"DM Sans",sans-serif;font-size:14px;color:var(--text);outline:none;}
+.inp:focus{border-color:var(--blue);}
+.afoot{font-size:11px;color:var(--muted);text-align:center;margin-top:12px;}
+.sbar{background:var(--navy);padding:11px 22px 7px;display:flex;justify-content:space-between;align-items:center;color:white;flex-shrink:0;}
+.sbar .t{font-size:15px;font-weight:600;}
+.hdr{background:var(--navy);padding:4px 20px 20px;color:white;flex-shrink:0;position:relative;overflow:hidden;}
+.hdr::before{content:"";position:absolute;width:220px;height:220px;background:radial-gradient(circle,rgba(59,143,212,.2),transparent 70%);top:-60px;right:-30px;border-radius:50%;}
+.hrow{display:flex;justify-content:space-between;align-items:center;}
+.grt{font-size:12px;color:rgba(255,255,255,.6);}
+.pnm{font-family:"DM Serif Display",serif;font-size:20px;}
+.ava{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#3B8FD4,#0E9E8A);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:white;border:2px solid rgba(255,255,255,.3);cursor:pointer;flex-shrink:0;}
+.scc{background:linear-gradient(135deg,var(--blue),var(--teal));border-radius:var(--r);padding:13px 16px;margin:12px 18px 0;cursor:pointer;position:relative;overflow:hidden;}
+.scc::after{content:"";position:absolute;width:120px;height:120px;background:rgba(255,255,255,.06);border-radius:50%;bottom:-30px;right:-10px;}
+.scl{font-size:10px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.8px;}
+.scr{display:flex;align-items:flex-end;gap:8px;margin:2px 0;}
+.scn{font-family:"DM Serif Display",serif;font-size:44px;color:white;line-height:1;}
+.scx{font-size:16px;color:rgba(255,255,255,.5);padding-bottom:5px;}
+.scbg{background:rgba(255,255,255,.2);border-radius:999px;height:5px;margin:2px 0 5px;}
+.scf{height:5px;border-radius:999px;background:white;transition:width 1s;}
+.scs{font-size:11px;color:rgba(255,255,255,.75);}
+.scbdg{position:absolute;top:11px;right:11px;background:rgba(255,255,255,.18);border-radius:20px;padding:3px 8px;font-size:10px;color:white;font-weight:500;}
+.scroll{flex:1;overflow-y:auto;padding:14px 18px 88px;}
+.scroll::-webkit-scrollbar{display:none;}
+.sec{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin:18px 0 8px;}
+.sec:first-child{margin-top:0;}
+.card{background:white;border-radius:var(--r);padding:14px;margin-bottom:10px;box-shadow:var(--sh);border:1px solid var(--border);}
+.vg{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.vc{background:white;border-radius:var(--rs);padding:11px;border:1px solid var(--border);cursor:pointer;}
+.vi{font-size:17px;margin-bottom:3px;}
+.vl{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px;}
+.vv{font-family:"DM Serif Display",serif;font-size:22px;color:var(--navy);line-height:1.1;margin:1px 0;}
+.vu{font-size:10px;color:var(--muted);}
+.vt{font-size:10px;margin-top:2px;}
+.ok{color:var(--teal);}.wn{color:var(--amber);}.al{color:var(--rose);}
+.mi{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--border);}
+.mi:last-child{border-bottom:none;padding-bottom:0;}
+.mdo{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.mn{font-size:13px;font-weight:600;}
+.ms{font-size:11px;color:var(--muted);margin-top:1px;}
+.mt{font-size:10px;font-weight:600;background:var(--slate);padding:3px 7px;border-radius:7px;color:var(--blue);flex-shrink:0;}
+.mc{width:24px;height:24px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:11px;transition:all .2s;}
+.mc.done{background:var(--teal);border-color:var(--teal);color:white;}
+.phdr{background:var(--navy);padding:10px 18px 18px;color:white;flex-shrink:0;}
+.bk{display:flex;align-items:center;gap:4px;font-size:12px;color:rgba(255,255,255,.7);cursor:pointer;margin-bottom:8px;background:none;border:none;font-family:"DM Sans",sans-serif;}
+.pt{font-family:"DM Serif Display",serif;font-size:21px;}
+.ps{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;}
+.nav{background:white;border-top:1px solid var(--border);display:flex;padding:7px 0 13px;flex-shrink:0;box-shadow:0 -4px 20px rgba(13,43,78,.06);}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:3px;color:var(--muted);font-size:10px;font-weight:500;}
+.ni.on{color:var(--blue);}
+.nic{font-size:18px;}
+.nid{width:4px;height:4px;border-radius:50%;background:var(--blue);margin-top:1px;display:none;}
+.ni.on .nid{display:block;}
+.b{display:inline-flex;align-items:center;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;}
+.bok{background:var(--teal-light);color:var(--teal);}.bwn{background:var(--amber-light);color:#92400E;}
+.btn{width:100%;background:linear-gradient(135deg,var(--blue),var(--teal));color:white;border:none;border-radius:var(--rs);padding:13px;font-family:"DM Sans",sans-serif;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(14,158,138,.25);margin-top:4px;}
+.btn:disabled{opacity:.6;cursor:not-allowed;}
+.btn2{width:100%;background:white;color:var(--blue);border:2px solid var(--blue);border-radius:var(--rs);padding:11px;font-family:"DM Sans",sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:8px;}
+.fg{margin-bottom:11px;}
+.fg label{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:4px;}
+.fg input,.fg select,.fg textarea{width:100%;padding:10px 12px;border:2px solid var(--border);border-radius:var(--rs);font-family:"DM Sans",sans-serif;font-size:13px;color:var(--text);outline:none;background:white;}
+.fg input:focus,.fg select:focus{border-color:var(--blue);}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.div{height:1px;background:var(--border);margin:10px 0;}
+.ir{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);}
+.ir:last-child{border-bottom:none;}
+.ik{font-size:12px;color:var(--muted);}.iv{font-size:13px;font-weight:600;}
+.gr{display:flex;align-items:center;gap:8px;margin-bottom:9px;}
+.gl{font-size:11px;font-weight:500;width:78px;flex-shrink:0;}
+.gb{flex:1;background:var(--slate);border-radius:999px;height:6px;overflow:hidden;}
+.gf{height:6px;border-radius:999px;transition:width 1s;}
+.gp{font-size:11px;font-weight:700;width:32px;text-align:right;flex-shrink:0;}
+.pi{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;}
+.px{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.ei{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);}
+.ei:last-child{border-bottom:none;}
+.ex{width:34px;height:34px;border-radius:10px;background:#EBF3FB;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.cp{display:flex;gap:5px;margin-bottom:16px;}
+.cp div{flex:1;height:4px;border-radius:2px;}
+.ob{background:var(--slate);border:2px solid var(--border);border-radius:var(--rs);padding:10px 8px;font-family:"DM Sans",sans-serif;font-size:13px;font-weight:500;cursor:pointer;text-align:center;width:100%;}
+.ob.sel{border-color:var(--teal);background:var(--teal-light);color:var(--teal);}
+.og{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.cob{background:linear-gradient(135deg,#0D2B4E,#1A5FA8);border-radius:var(--r);padding:12px 14px;display:flex;align-items:center;gap:11px;}
+.tst{position:absolute;bottom:86px;left:16px;right:16px;background:var(--navy);color:white;padding:10px 14px;border-radius:12px;font-size:13px;font-weight:500;z-index:200;opacity:0;transform:translateY(6px);transition:all .3s;pointer-events:none;text-align:center;}
+.tst.show{opacity:1;transform:none;}
+.spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes sp{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+<div class="phone">
+<div class="tst" id="tst"></div>
+
+<div class="screen active auth-bg" id="s-auth">
+  <div class="alogo">❤️</div>
+  <div class="atitle">Dr. Gustavo Mendes</div>
+  <div class="asub">Portal do Paciente · Cardiologia<br>CRM-SP 232740 · InCor HCFMUSP</div>
+  <div class="acard">
+    <div class="tabs">
+      <button class="tab on" id="tl" onclick="stab('l')">Entrar</button>
+      <button class="tab" id="ts" onclick="stab('s')">Cadastrar</button>
+    </div>
+    <div id="aerr" class="aerr"></div>
+    <div id="fl">
+      <label class="lbl">E-mail</label>
+      <input class="inp" type="email" id="lem" placeholder="seu@email.com">
+      <label class="lbl">Senha</label>
+      <input class="inp" type="password" id="lpw" placeholder="••••••••">
+      <button class="btn" id="btnl" onclick="doLogin()">Entrar</button>
+    </div>
+    <div id="fs" style="display:none">
+      <label class="lbl">Nome completo</label>
+      <input class="inp" type="text" id="snm" placeholder="João Silva">
+      <label class="lbl">E-mail</label>
+      <input class="inp" type="email" id="sem" placeholder="seu@email.com">
+      <label class="lbl">Senha</label>
+      <input class="inp" type="password" id="spw" placeholder="mínimo 6 caracteres">
+      <button class="btn" id="btns" onclick="doSignup()">Criar conta</button>
+    </div>
+    <div class="afoot">Portal seguro · Dr. Gustavo Henrique Mendes · CRM-SP 232740</div>
+  </div>
+</div>
+
+<div class="screen" id="s-home">
+  <div class="sbar"><span class="t" id="clk">--:--</span><div style="display:flex;gap:5px;font-size:11px;color:white;"><span>●●●●</span><span>WiFi</span><span>🔋</span></div></div>
+  <div class="hdr"><div class="hrow"><div><div class="grt">Olá,</div><div class="pnm" id="hnm">...</div></div><div class="ava" id="hav" onclick="doLogout()">?</div></div></div>
+  <div class="scc" onclick="go('s-score')">
+    <div class="scbdg" id="scmo">Abr</div>
+    <div class="scl">Score de Saúde</div>
+    <div class="scr"><div class="scn" id="scv">0</div><div class="scx">/100</div></div>
+    <div class="scbg"><div class="scf" id="scb" style="width:0%"></div></div>
+    <div class="scs" id="scm">Calculando...</div>
+  </div>
+  <div class="scroll">
+    <div class="sec">Próxima Consulta</div>
+    <div class="cob"><div style="font-size:24px;">📅</div><div style="flex:1"><div style="font-size:10px;color:rgba(255,255,255,.6);text-transform:uppercase;">Agendado</div><div style="font-size:14px;font-weight:700;color:white;margin-top:1px;">14 de Abril — 14h30</div><div style="font-size:11px;color:rgba(255,255,255,.7);">Teleconsulta · Dr. Gustavo Henrique Mendes</div></div></div>
+    <div class="sec">Monitoramento</div>
+    <div class="vg">
+      <div class="vc" onclick="go('s-vitals')"><div class="vi">❤️</div><div class="vl">Pressão</div><div class="vv" id="vpa">--/--</div><div class="vu">mmHg</div><div class="vt" id="vpat">—</div></div>
+      <div class="vc" onclick="go('s-vitals')"><div class="vi">💓</div><div class="vl">Freq. Card.</div><div class="vv" id="vfc">--</div><div class="vu">bpm</div><div class="vt" id="vfct">—</div></div>
+      <div class="vc" onclick="go('s-vitals')"><div class="vi">⚖️</div><div class="vl">Peso</div><div class="vv" id="vpe">--</div><div class="vu">kg</div><div class="vt" id="vpet">—</div></div>
+      <div class="vc" onclick="go('s-meds')"><div class="vi">💊</div><div class="vl">Remédios</div><div class="vv" id="vme">0/0</div><div class="vu">hoje</div><div class="vt" id="vmet">—</div></div>
+    </div>
+    <div class="sec">Medicamentos de Hoje</div>
+    <div class="card" id="mhl"><div style="color:var(--muted);font-size:13px;text-align:center;padding:8px;">Adicione medicamentos na aba Remédios.</div></div>
+    <div class="sec">Check-in Semanal</div>
+    <div class="card" onclick="go('s-ci')" style="background:linear-gradient(135deg,#EBF3FB,#E0F5F2);border-color:transparent;cursor:pointer;"><div style="display:flex;align-items:center;gap:12px;"><div style="font-size:24px;">📋</div><div><div style="font-size:14px;font-weight:600;">Como você está esta semana?</div><div style="font-size:11px;color:var(--muted);margin-top:2px;">5 perguntas · 2 minutos</div></div><div style="margin-left:auto;font-size:18px;color:var(--muted);">›</div></div></div>
+  </div>
+  <div class="nav">
+    <div class="ni on" onclick="go('s-home')"><div class="nic">🏠</div><span>Início</span><div class="nid"></div></div>
+    <div class="ni" onclick="go('s-vitals')"><div class="nic">📈</div><span>Evolução</span><div class="nid"></div></div>
+    <div class="ni" onclick="go('s-plan')"><div class="nic">📋</div><span>Meu Plano</span><div class="nid"></div></div>
+    <div class="ni" onclick="go('s-meds')"><div class="nic">💊</div><span>Remédios</span><div class="nid"></div></div>
+    <div class="ni" onclick="go('s-exams')"><div class="nic">🧪</div><span>Exames</span><div class="nid"></div></div>
+  </div>
+</div>
+
+<div class="screen" id="s-vitals">
+  <div class="phdr"><button class="bk" onclick="go('s-home')">← Voltar</button><div class="pt">Evolução</div><div class="ps">Últimos 30 dias</div></div>
+  <div class="scroll">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><div><div style="font-weight:600;font-size:14px;">Pressão Arterial</div><div style="font-size:11px;color:var(--muted);">Meta: &lt;130/80 mmHg</div></div><span class="b bok" id="past">--</span></div>
+      <div id="pachrt" style="font-size:12px;color:var(--muted);text-align:center;padding:20px;">Nenhum dado ainda</div>
+    </div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><div><div style="font-weight:600;font-size:14px;">Peso</div><div style="font-size:11px;color:var(--muted);">Meta: 80 kg</div></div><span class="b bwn" id="pest">--</span></div>
+      <div id="pechrt" style="font-size:12px;color:var(--muted);text-align:center;padding:20px;">Nenhum dado ainda</div>
+    </div>
+    <div class="sec">Registrar Medição</div>
+    <div class="card">
+      <div class="fg2">
+        <div class="fg"><label>Sistólica (mmHg)</label><input type="number" id="is" placeholder="128" min="80" max="220"></div>
+        <div class="fg"><label>Diastólica (mmHg)</label><input type="number" id="id" placeholder="82" min="50" max="140"></div>
+        <div class="fg"><label>FC (bpm)</label><input type="number" id="ifc" placeholder="70" min="40" max="200"></div>
+        <div class="fg"><label>Peso (kg)</label><input type="number" id="ip" placeholder="82.4" step="0.1"></div>
+      </div>
+      <button class="btn" onclick="svVital()">Registrar Medição</button>
+    </div>
+    <div class="sec">Registros Recentes</div>
+    <div class="card" id="vls"><div style="color:var(--muted);font-size:13px;text-align:center;">Nenhum registro ainda.</div></div>
+  </div>
+  <div class="nav">
+    <div class="ni" onclick="go('s-home')"><div class="nic">🏠</div><span>Início</span></div>
+    <div class="ni on" onclick="go('s-vitals')"><div class="nic">📈</div><span>Evolução</span><div class="nid"></div></div>
+    <div class="ni" onclick="go('s-plan')"><div class="nic">📋</div><span>Meu Plano</span></div>
+    <div class="ni" onclick="go('s-meds')"><div class="nic">💊</div><span>Remédios</span></div>
+    <div class="ni" onclick="go('s-exams')"><div class="nic">🧪</div><span>Exames</span></div>
+  </div>
+</div>
+
+<div class="screen" id="s-plan">
+  <div class="phdr"><button class="bk" onclick="go('s-home')">← Voltar</button><div class="pt">Meu Plano de Cuidado</div><div class="ps">Dr. Gustavo Henrique Mendes</div></div>
+  <div class="scroll">
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--teal));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:14px;">G</div><div><div style="font-size:13px;font-weight:600;">Dr. Gustavo Henrique Mendes</div><div style="font-size:11px;color:var(--muted);">Cardiologista · CRM-SP 232740 · InCor HCFMUSP</div></div></div>
+      <div class="div"></div>
+      <div class="ir"><span class="ik">Diagnóstico</span><span class="iv">HAS + Dislipidemia</span></div>
+      <div class="ir"><span class="ik">Risco cardiovascular</span><span class="iv"><span class="b bwn">Intermediário</span></span></div>
+      <div class="ir"><span class="ik">Próximo retorno</span><span class="iv">14 abr 2025</span></div>
+    </div>
+    <div class="sec">Metas Terapêuticas</div>
+    <div class="card">
+      <div class="gr"><div class="gl">Pressão</div><div class="gb"><div class="gf" id="gpa" style="width:0%;background:var(--teal);"></div></div><div class="gp" id="gpap" style="color:var(--teal);">--%</div></div>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:10px;padding-left:86px;">Meta: &lt;130/80 mmHg</div>
+      <div class="gr"><div class="gl">LDL-c</div><div class="gb"><div class="gf" style="width:65%;background:var(--amber);"></div></div><div class="gp" style="color:var(--amber);">65%</div></div>
+      <div style="font-size:10px;color:var(--muted);margin-bottom:10px;padding-left:86px;">Meta: &lt;100 mg/dL</div>
+      <div class="gr"><div class="gl">Peso</div><div class="gb"><div class="gf" id="gpe" style="width:0%;background:var(--amber);"></div></div><div class="gp" id="gpep" style="color:var(--amber);">--%</div></div>
+      <div style="font-size:10px;color:var(--muted);padding-left:86px;">Meta: 80 kg</div>
+    </div>
+    <div class="sec">Orientações</div>
+    <div class="card">
+      <div class="pi"><div class="px" style="background:#EBF3FB;">🏃</div><div><div style="font-size:13px;font-weight:600;">Atividade Física</div><div style="font-size:11px;color:var(--muted);">150 min/semana — caminhada ou natação</div></div></div>
+      <div class="pi"><div class="px" style="background:var(--teal-light);">🥗</div><div><div style="font-size:13px;font-weight:600;">Alimentação</div><div style="font-size:11px;color:var(--muted);">Dieta DASH — sódio &lt;2g/dia</div></div></div>
+      <div class="pi"><div class="px" style="background:var(--amber-light);">⚖️</div><div><div style="font-size:13px;font-weight:600;">Peso</div><div style="font-size:11px;color:var(--muted);">Reduzir até meta de 80 kg</div></div></div>
+      <div class="pi" style="margin:0;"><div class="px" style="background:var(--rose-light);">🚭</div><div><div style="font-size:13px;font-weight:600;">Tabagismo</div><div style="font-size:11px;color:var(--muted);">Não fumante — manter.</div></div></div>
+    </div>
+  </div>
+  <div class="nav">
+    <div class="ni" onclick="go('s-home')"><div class="nic">🏠</div><span>Início</span></div>
+    <div class="ni" onclick="go('s-vitals')"><div class="nic">📈</div><span>Evolução</span></div>
+    <div class="ni on" onclick="go('s-plan')"><div class="nic">📋</div><span>Meu Plano</span><div class="nid"></div></div>
+    <div class="ni" onclick="go('s-meds')"><div class="nic">💊</div><span>Remédios</span></div>
+    <div class="ni" onclick="go('s-exams')"><div class="nic">🧪</div><span>Exames</span></div>
+  </div>
+</div>
+
+<div class="screen" id="s-meds">
+  <div class="phdr"><button class="bk" onclick="go('s-home')">← Voltar</button><div class="pt">Medicamentos</div><div class="ps" id="msub">...</div></div>
+  <div class="scroll">
+    <div class="sec">Hoje</div>
+    <div class="card" id="mfl"><div style="color:var(--muted);font-size:13px;text-align:center;padding:8px;">Adicione medicamentos abaixo.</div></div>
+    <div class="sec">Adesão esta semana</div>
+    <div class="card" id="adhcard"><div style="color:var(--muted);font-size:13px;text-align:center;padding:8px;">Sem dados ainda.</div></div>
+    <div class="sec">Adicionar Medicamento</div>
+    <div class="card">
+      <div class="fg"><label>Nome</label><input type="text" id="mn" placeholder="ex: Losartana 50mg"></div>
+      <div class="fg2">
+        <div class="fg"><label>Dose</label><input type="text" id="md" placeholder="1 comprimido"></div>
+        <div class="fg"><label>Horário</label><input type="time" id="mh" value="08:00"></div>
+      </div>
+      <div class="fg"><label>Cor</label><select id="mcol"><option value="#1A5FA8">🔵 Azul</option><option value="#0E9E8A">🟢 Verde</option><option value="#F59E0B">🟡 Amarelo</option><option value="#E84444">🔴 Vermelho</option><option value="#8B5CF6">🟣 Roxo</option></select></div>
+      <button class="btn" onclick="svMed()">Adicionar Medicamento</button>
+    </div>
+  </div>
+  <div class="nav">
+    <div class="ni" onclick="go('s-home')"><div class="nic">🏠</div><span>Início</span></div>
+    <div class="ni" onclick="go('s-vitals')"><div class="nic">📈</div><span>Evolução</span></div>
+    <div class="ni" onclick="go('s-plan')"><div class="nic">📋</div><span>Meu Plano</span></div>
+    <div class="ni on" onclick="go('s-meds')"><div class="nic">💊</div><span>Remédios</span><div class="nid"></div></div>
+    <div class="ni" onclick="go('s-exams')"><div class="nic">🧪</div><span>Exames</span></div>
+  </div>
+</div>
+
+<div class="screen" id="s-exams">
+  <div class="phdr"><button class="bk" onclick="go('s-home')">← Voltar</button><div class="pt">Exames</div><div class="ps">Histórico</div></div>
+  <div class="scroll">
+    <div class="sec">Histórico</div>
+    <div class="card" id="exl">
+      <div class="ei"><div class="ex">❤️</div><div style="flex:1"><div style="font-size:13px;font-weight:600;">Ecocardiograma</div><div style="font-size:11px;color:var(--muted);">28 jan 2025 · Normal</div></div><span class="b bok">Ok</span></div>
+      <div class="ei"><div class="ex">📊</div><div style="flex:1"><div style="font-size:13px;font-weight:600;">Perfil Lipídico</div><div style="font-size:11px;color:var(--muted);">28 jan 2025 · LDL: 112</div></div><span class="b bwn">Atenção</span></div>
+      <div class="ei"><div class="ex">⚡</div><div style="flex:1"><div style="font-size:13px;font-weight:600;">ECG</div><div style="font-size:11px;color:var(--muted);">15 dez 2024 · Ritmo sinusal</div></div><span class="b bok">Ok</span></div>
+    </div>
+    <div class="sec">Registrar Exame</div>
+    <div class="card">
+      <div class="fg"><label>Nome</label><input type="text" id="en" placeholder="ex: MAPA 24h"></div>
+      <div class="fg"><label>Data</label><input type="date" id="ed"></div>
+      <div class="fg"><label>Resultado</label><textarea id="er" rows="2" placeholder="ex: LDL: 112 mg/dL" style="resize:none;"></textarea></div>
+      <button class="btn" onclick="svExam()">Registrar Exame</button>
+    </div>
+  </div>
+  <div class="nav">
+    <div class="ni" onclick="go('s-home')"><div class="nic">🏠</div><span>Início</span></div>
+    <div class="ni" onclick="go('s-vitals')"><div class="nic">📈</div><span>Evolução</span></div>
+    <div class="ni" onclick="go('s-plan')"><div class="nic">📋</div><span>Meu Plano</span></div>
+    <div class="ni" onclick="go('s-meds')"><div class="nic">💊</div><span>Remédios</span></div>
+    <div class="ni on" onclick="go('s-exams')"><div class="nic">🧪</div><span>Exames</span><div class="nid"></div></div>
+  </div>
+</div>
+
+<div class="screen" id="s-ci">
+  <div class="phdr"><button class="bk" onclick="go('s-home')">← Voltar</button><div class="pt">Check-in Semanal</div><div class="ps" id="cist">Pergunta 1 de 5</div></div>
+  <div class="scroll"><div class="cp" id="cip"></div><div id="cib"></div></div>
+</div>
+
+<div class="screen" id="s-score">
+  <div class="phdr"><button class="bk" onclick="go('s-home')">← Voltar</button><div class="pt">Score de Saúde</div><div class="ps">Como é calculado</div></div>
+  <div class="scroll">
+    <div class="scc" style="cursor:default;margin:0 0 16px;">
+      <div class="scl">Score Atual</div>
+      <div class="scr"><div class="scn" id="scdv">0</div><div class="scx">/100</div></div>
+      <div class="scbg"><div class="scf" id="scdb" style="width:0%"></div></div>
+      <div class="scs" id="scdm">Calculando...</div>
+    </div>
+    <div class="sec">Componentes</div>
+    <div class="card">
+      <div class="gr"><div class="gl" style="font-size:11px;">PA controlada</div><div class="gb"><div class="gf" id="spa" style="width:0%;background:var(--teal);"></div></div><div class="gp" id="spav" style="color:var(--teal);">0/30</div></div>
+      <div class="gr"><div class="gl" style="font-size:11px;">Medicamentos</div><div class="gb"><div class="gf" id="sme" style="width:0%;background:var(--blue);"></div></div><div class="gp" id="smev" style="color:var(--blue);">0/30</div></div>
+      <div class="gr"><div class="gl" style="font-size:11px;">Check-ins</div><div class="gb"><div class="gf" id="sci" style="width:0%;background:var(--amber);"></div></div><div class="gp" id="sciv" style="color:var(--amber);">0/20</div></div>
+      <div class="gr"><div class="gl" style="font-size:11px;">Registros</div><div class="gb"><div class="gf" id="srg" style="width:0%;background:#3B8FD4;"></div></div><div class="gp" id="srgv" style="color:#3B8FD4;">0/20</div></div>
+    </div>
+    <button class="btn" style="margin-top:16px;" onclick="go('s-ci')">Fazer Check-in Agora</button>
+  </div>
+</div>
+
+</div>
+<script>
+// ── CONFIG ──────────────────────────────
+var SU = "https://guluxzwbxwqukzcmrbon.supabase.co";
+var SK = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1bHV4endieHdxdWt6Y21yYm9uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxODgwNjQsImV4cCI6MjA5MDc2NDA2NH0.w057UJWdhm6kLaYk2PM0l-79Qpg-VxDYNj0pwWUg9EM";
+
+// ── STATE ────────────────────────────────
+var tok = null, uid = null, vtls = [], mds = [], adh = [], cias = {}, cis = 0;
+var CIQ = [
+  {q:"Como você está se sentindo?", o:["😊 Muito bem","🙂 Bem","😐 Regular","😟 Mal"]},
+  {q:"Teve algum sintoma?", o:["💤 Cansaço","😵 Tontura","💨 Falta de ar","✅ Nenhum"]},
+  {q:"Praticou atividade física?", o:["🏃 Todo dia","🚶 Alguns dias","🛋️ Pouco","❌ Não fiz"]},
+  {q:"Como está sua alimentação?", o:["🥗 Ótima","🍽️ Boa","🍔 Regular","😬 Ruim"]},
+  {q:"Conseguiu dormir bem?", o:["😴 Muito bem","🌙 Bem","😓 Regular","😫 Mal"]}
+];
+
+// ── SUPABASE REST API (sem biblioteca) ──
+async function sbPost(path, body, authTok) {
+  var headers = {"Content-Type":"application/json","apikey":SK};
+  if (authTok) headers["Authorization"] = "Bearer " + authTok;
+  var r = await fetch(SU + path, {method:"POST", headers:headers, body:JSON.stringify(body)});
+  return r.json();
+}
+async function sbGet(path, authTok) {
+  var headers = {"apikey":SK, "Authorization":"Bearer " + (authTok||SK)};
+  var r = await fetch(SU + path, {headers:headers});
+  return r.json();
+}
+async function sbInsert(table, data) {
+  var headers = {"Content-Type":"application/json","apikey":SK,"Authorization":"Bearer "+tok,"Prefer":"return=representation"};
+  var r = await fetch(SU+"/rest/v1/"+table, {method:"POST",headers:headers,body:JSON.stringify(data)});
+  return r.json();
+}
+async function sbSelect(table, query) {
+  var headers = {"apikey":SK,"Authorization":"Bearer "+tok};
+  var r = await fetch(SU+"/rest/v1/"+table+"?"+query, {headers:headers});
+  return r.json();
+}
+async function sbDelete(table, query) {
+  var headers = {"apikey":SK,"Authorization":"Bearer "+tok};
+  await fetch(SU+"/rest/v1/"+table+"?"+query, {method:"DELETE",headers:headers});
+}
+
+// ── INIT ────────────────────────────────
+window.onload = function() {
+  tick(); setInterval(tick, 60000);
+  var mo = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+  document.getElementById("scmo").textContent = mo[new Date().getMonth()];
+  // Check saved session
+  var saved = localStorage.getItem("cv_tok");
+  var savedUid = localStorage.getItem("cv_uid");
+  var savedName = localStorage.getItem("cv_name");
+  if (saved && savedUid) {
+    tok = saved; uid = savedUid;
+    setUserUI(savedName || "Paciente");
+    loadAll();
+    go("s-home");
+  }
+};
+
+function tick() {
+  var n = new Date();
+  document.getElementById("clk").textContent = 
+    n.getHours().toString().padStart(2,"0") + ":" + 
+    n.getMinutes().toString().padStart(2,"0");
+}
+
+// ── AUTH ────────────────────────────────
+function stab(t) {
+  document.getElementById("tl").className = "tab" + (t==="l"?" on":"");
+  document.getElementById("ts").className = "tab" + (t==="s"?" on":"");
+  document.getElementById("fl").style.display = t==="l" ? "block" : "none";
+  document.getElementById("fs").style.display = t==="s" ? "block" : "none";
+  document.getElementById("aerr").style.display = "none";
+}
+
+function showErr(m) {
+  var e = document.getElementById("aerr");
+  e.textContent = m; e.style.display = "block";
+}
+
+async function doLogin() {
+  var em = document.getElementById("lem").value.trim();
+  var pw = document.getElementById("lpw").value;
+  if (!em || !pw) return showErr("Preencha e-mail e senha.");
+  var btn = document.getElementById("btnl");
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Entrando...';
+  try {
+    var r = await sbPost("/auth/v1/token?grant_type=password", {email:em, password:pw});
+    if (r.error || !r.access_token) {
+      showErr(r.error_description || r.error || "E-mail ou senha incorretos.");
+    } else {
+      tok = r.access_token; uid = r.user.id;
+      var nm = r.user.user_metadata && r.user.user_metadata.full_name ? r.user.user_metadata.full_name : em;
+      localStorage.setItem("cv_tok", tok);
+      localStorage.setItem("cv_uid", uid);
+      localStorage.setItem("cv_name", nm);
+      setUserUI(nm);
+      await loadAll();
+      go("s-home");
+    }
+  } catch(e) { showErr("Erro de conexão. Tente novamente."); }
+  btn.disabled = false; btn.textContent = "Entrar";
+}
+
+async function doSignup() {
+  var nm = document.getElementById("snm").value.trim();
+  var em = document.getElementById("sem").value.trim();
+  var pw = document.getElementById("spw").value;
+  if (!nm||!em||!pw) return showErr("Preencha todos os campos.");
+  if (pw.length < 6) return showErr("Senha: mínimo 6 caracteres.");
+  var btn = document.getElementById("btns");
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Criando...';
+  try {
+    var r = await sbPost("/auth/v1/signup", {email:em, password:pw, data:{full_name:nm}});
+    if (r.error) {
+      showErr(r.error_description || r.error || "Erro ao criar conta.");
+    } else {
+      toast("✅ Conta criada! Faça login com seu e-mail e senha.");
+      stab("l");
+      document.getElementById("lem").value = em;
+    }
+  } catch(e) { showErr("Erro de conexão. Tente novamente."); }
+  btn.disabled = false; btn.textContent = "Criar conta";
+}
+
+function doLogout() {
+  if (!confirm("Sair?")) return;
+  localStorage.removeItem("cv_tok");
+  localStorage.removeItem("cv_uid");
+  localStorage.removeItem("cv_name");
+  tok = null; uid = null; vtls = []; mds = []; adh = [];
+  go("s-auth");
+}
+
+function setUserUI(nm) {
+  var ini = nm.split(" ").map(function(w){return w[0]||""}).join("").toUpperCase().slice(0,2);
+  document.getElementById("hnm").textContent = nm.split(" ")[0];
+  document.getElementById("hav").textContent = ini || "?";
+}
+
+// ── LOAD ALL ────────────────────────────
+async function loadAll() {
+  await loadVitals();
+  await loadMeds();
+  calcScore();
+}
+
+// ── VITALS ──────────────────────────────
+async function loadVitals() {
+  var data = await sbSelect("vitals", "user_id=eq."+uid+"&order=created_at.desc&limit=30");
+  vtls = Array.isArray(data) ? data : [];
+  renderVitals();
+}
+
+function renderVitals() {
+  if (vtls.length > 0) {
+    var v = vtls[0];
+    if (v.systolic && v.diastolic) {
+      document.getElementById("vpa").textContent = v.systolic+"/"+v.diastolic;
+      var ok = v.systolic < 130 && v.diastolic < 80;
+      document.getElementById("vpat").innerHTML = ok ? '<span class="ok">✓ Meta</span>' : '<span class="wn">↑ Acima</span>';
+      document.getElementById("past").textContent = ok ? "✓ Controlada" : "↑ Verificar";
+      document.getElementById("past").className = "b " + (ok ? "bok" : "bwn");
+      var pp = ok ? 90 : Math.max(10, Math.round((130/v.systolic)*100));
+      document.getElementById("gpa").style.width = pp+"%";
+      document.getElementById("gpap").textContent = pp+"%";
+    }
+    if (v.heart_rate) {
+      document.getElementById("vfc").textContent = v.heart_rate;
+      document.getElementById("vfct").innerHTML = v.heart_rate < 100 ? '<span class="ok">✓ Normal</span>' : '<span class="wn">↑ Alta</span>';
+    }
+    if (v.weight) {
+      document.getElementById("vpe").textContent = v.weight;
+      document.getElementById("vpet").innerHTML = v.weight <= 80 ? '<span class="ok">✓ Meta</span>' : '<span class="wn">Meta: 80kg</span>';
+      var wp = Math.min(100, Math.round((80/v.weight)*100));
+      document.getElementById("gpe").style.width = wp+"%";
+      document.getElementById("gpep").textContent = wp+"%";
+    }
+  }
+  var vl = document.getElementById("vls");
+  if (vtls.length === 0) {
+    vl.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:8px;">Nenhum registro ainda. Faça sua primeira medição!</div>';
+  } else {
+    vl.innerHTML = vtls.slice(0,8).map(function(v) {
+      var d = new Date(v.created_at).toLocaleDateString("pt-BR",{day:"2-digit",month:"short"});
+      var p = [];
+      if (v.systolic) p.push("PA:"+v.systolic+"/"+v.diastolic);
+      if (v.heart_rate) p.push("FC:"+v.heart_rate);
+      if (v.weight) p.push(v.weight+"kg");
+      return '<div class="ir"><span class="ik">'+d+'</span><span class="iv" style="font-size:12px;">'+p.join(" · ")+'</span></div>';
+    }).join("");
+  }
+  // Simple text chart for PA
+  var pac = document.getElementById("pachrt");
+  var rev = vtls.slice().reverse().filter(function(v){return v.systolic;});
+  if (rev.length > 0) {
+    pac.innerHTML = rev.slice(-7).map(function(v) {
+      var d = new Date(v.created_at).toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"});
+      var ok = v.systolic < 130;
+      var bar = Math.round((v.systolic/200)*100);
+      return '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">'
+        +'<span style="font-size:10px;color:var(--muted);width:36px;">'+d+'</span>'
+        +'<div style="flex:1;background:var(--slate);border-radius:4px;height:8px;">'
+        +'<div style="width:'+bar+'%;height:8px;border-radius:4px;background:'+(ok?'var(--teal)':'var(--rose)')+'"></div></div>'
+        +'<span style="font-size:11px;font-weight:600;width:50px;text-align:right;">'+v.systolic+'/'+v.diastolic+'</span></div>';
+    }).join("");
+  }
+}
+
+async function svVital() {
+  var s = parseInt(document.getElementById("is").value);
+  var d = parseInt(document.getElementById("id").value);
+  var f = parseInt(document.getElementById("ifc").value);
+  var p = parseFloat(document.getElementById("ip").value);
+  if (!s && !d && !f && !p) return toast("⚠️ Preencha ao menos um campo");
+  var btn = event.target; btn.disabled = true; btn.textContent = "Salvando...";
+  var r = await sbInsert("vitals", {user_id:uid, systolic:s||null, diastolic:d||null, heart_rate:f||null, weight:p||null});
+  btn.disabled = false; btn.textContent = "Registrar Medição";
+  if (r && r[0] && r[0].id) {
+    ["is","id","ifc","ip"].forEach(function(id){document.getElementById(id).value="";});
+    toast("✅ Medição registrada!");
+    await loadVitals(); calcScore();
+  } else { toast("❌ Erro ao salvar. Tente novamente."); }
+}
+
+// ── MEDS ────────────────────────────────
+async function loadMeds() {
+  var data = await sbSelect("medications", "user_id=eq."+uid+"&order=time_of_day");
+  mds = Array.isArray(data) ? data : [];
+  var td = new Date().toISOString().split("T")[0];
+  var adata = await sbSelect("med_adherence", "user_id=eq."+uid+"&date=eq."+td);
+  adh = Array.isArray(adata) ? adata : [];
+  renderMeds();
+}
+
+function renderMeds() {
+  var tids = adh.map(function(a){return a.medication_id;});
+  var tc = tids.length;
+  document.getElementById("msub").textContent = mds.length+" medicamentos · "+tc+" tomados hoje";
+  document.getElementById("vme").textContent = tc+"/"+(mds.length||"--");
+  document.getElementById("vmet").innerHTML = mds.length > 0 && tc === mds.length
+    ? '<span class="ok">✓ Todos</span>'
+    : '<span class="wn">'+(mds.length-tc)+" pendentes</span>";
+  var html = mds.length === 0
+    ? '<div style="color:var(--muted);font-size:13px;text-align:center;padding:8px;">Adicione medicamentos abaixo.</div>'
+    : mds.map(function(m) {
+        var done = tids.indexOf(m.id) >= 0;
+        return '<div class="mi">'
+          +'<div class="mdo" style="background:'+(m.color||"#1A5FA8")+'"></div>'
+          +'<div style="flex:1"><div class="mn">'+m.name+'</div><div class="ms">'+(m.dose||"")+'</div></div>'
+          +'<div class="mt">'+(m.time_of_day||"--")+'</div>'
+          +'<div class="mc'+(done?" done":"")+'" onclick="togM(''+m.id+'',this)">'+(done?"✓":"")+'</div>'
+          +'</div>';
+      }).join("");
+  document.getElementById("mhl").innerHTML = html;
+  document.getElementById("mfl").innerHTML = html;
+  // Adherence display
+  var pct = mds.length > 0 ? Math.round((tc/mds.length)*100) : 0;
+  document.getElementById("adhcard").innerHTML = 
+    '<div style="display:flex;justify-content:space-between;margin-bottom:8px;">'
+    +'<span style="font-size:13px;color:var(--muted);">Hoje</span>'
+    +'<span style="font-size:14px;font-weight:700;color:var(--teal);">'+pct+'%</span></div>'
+    +'<div style="background:var(--slate);border-radius:999px;height:8px;">'
+    +'<div style="width:'+pct+'%;height:8px;border-radius:999px;background:'+(pct>=80?"var(--teal)":pct>=50?"var(--amber)":"var(--rose)")+'"></div></div>';
+}
+
+async function togM(mid, el) {
+  var td = new Date().toISOString().split("T")[0];
+  var ex = adh.filter(function(a){return a.medication_id===mid;})[0];
+  if (ex) {
+    await sbDelete("med_adherence", "id=eq."+ex.id);
+    adh = adh.filter(function(a){return a.medication_id!==mid;});
+    el.className = "mc"; el.textContent = "";
+  } else {
+    var r = await sbInsert("med_adherence", {user_id:uid, medication_id:mid, date:td, taken:true});
+    if (r && r[0]) adh.push(r[0]);
+    el.className = "mc done"; el.textContent = "✓";
+  }
+  renderMeds(); calcScore();
+}
+
+async function svMed() {
+  var nm = document.getElementById("mn").value.trim();
+  if (!nm) return toast("⚠️ Digite o nome");
+  var btn = event.target; btn.disabled = true; btn.textContent = "Salvando...";
+  var r = await sbInsert("medications", {
+    user_id:uid, name:nm,
+    dose:document.getElementById("md").value.trim(),
+    time_of_day:document.getElementById("mh").value,
+    color:document.getElementById("mcol").value
+  });
+  btn.disabled = false; btn.textContent = "Adicionar Medicamento";
+  if (r && r[0] && r[0].id) {
+    document.getElementById("mn").value = "";
+    document.getElementById("md").value = "";
+    toast("✅ Medicamento adicionado!");
+    await loadMeds();
+  } else { toast("❌ Erro ao salvar. Verifique os dados."); }
+}
+
+// ── EXAMS ───────────────────────────────
+async function svExam() {
+  var nm = document.getElementById("en").value.trim();
+  if (!nm) return toast("⚠️ Digite o nome");
+  var btn = event.target; btn.disabled = true; btn.textContent = "Salvando...";
+  var r = await sbInsert("exams", {
+    user_id:uid, name:nm,
+    exam_date:document.getElementById("ed").value||null,
+    result:document.getElementById("er").value.trim()
+  });
+  btn.disabled = false; btn.textContent = "Registrar Exame";
+  if (r && r[0] && r[0].id) {
+    document.getElementById("en").value = "";
+    document.getElementById("er").value = "";
+    toast("✅ Exame registrado!");
+    ldExams();
+  } else { toast("❌ Erro ao salvar."); }
+}
+
+async function ldExams() {
+  var data = await sbSelect("exams", "user_id=eq."+uid+"&order=created_at.desc");
+  if (!Array.isArray(data) || !data.length) return;
+  document.getElementById("exl").innerHTML = data.map(function(e) {
+    var d = e.exam_date ? new Date(e.exam_date).toLocaleDateString("pt-BR",{day:"2-digit",month:"short",year:"numeric"}) : "Sem data";
+    return '<div class="ei"><div class="ex">🧪</div><div style="flex:1"><div style="font-size:13px;font-weight:600;">'+e.name+'</div><div style="font-size:11px;color:var(--muted);">'+d+(e.result?" · "+e.result:"")+'</div></div></div>';
+  }).join("");
+}
+
+// ── CHECK-IN ────────────────────────────
+function rCI() {
+  var p = document.getElementById("cip");
+  p.innerHTML = CIQ.map(function(_,i) {
+    var c = i < cis ? "var(--blue)" : i === cis ? "#3B8FD4" : "var(--border)";
+    return '<div style="background:'+c+'"></div>';
+  }).join("");
+  document.getElementById("cist").textContent = "Pergunta "+(cis+1)+" de "+CIQ.length;
+  var q = CIQ[cis];
+  var opts = q.o.map(function(o) {
+    var safe = o.replace(/"/g,"&quot;");
+    return '<button class="ob" onclick="selCI(this,&quot;'+safe+'&quot;)">'+o+'</button>';
+  }).join("");
+  var nav = cis < CIQ.length-1
+    ? '<button class="btn" onclick="nCI()">Próxima →</button>'
+    : '<button class="btn" onclick="fCI()">Concluir ✓</button>';
+  if (cis > 0) nav += '<button class="btn2" onclick="pCI()">← Anterior</button>';
+  document.getElementById("cib").innerHTML =
+    '<div style="font-size:13px;color:var(--muted);margin-bottom:5px;">Esta semana...</div>'
+    +'<div style="font-size:15px;font-weight:600;margin-bottom:16px;line-height:1.4;">'+q.q+'</div>'
+    +'<div class="og">'+opts+'</div>'
+    +'<div style="margin-top:20px;">'+nav+'</div>';
+  if (cias[cis]) {
+    var btns = document.querySelectorAll(".ob");
+    for (var i = 0; i < btns.length; i++) {
+      if (btns[i].textContent === cias[cis]) btns[i].classList.add("sel");
+    }
+  }
+}
+
+function selCI(btn, val) {
+  var btns = document.querySelectorAll(".ob");
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove("sel");
+  btn.classList.add("sel"); cias[cis] = val;
+}
+function nCI() { if (cis < CIQ.length-1) { cis++; rCI(); } }
+function pCI() { if (cis > 0) { cis--; rCI(); } }
+
+async function fCI() {
+  var btn = event.target; btn.disabled = true; btn.textContent = "Salvando...";
+  var r = await sbInsert("checkins", {user_id:uid, answers:cias, score_contribution:15});
+  btn.disabled = false;
+  if (r && r[0] && r[0].id) {
+    cias = {}; cis = 0;
+    toast("🎉 Check-in concluído! +15 pontos!");
+    await calcScore(); go("s-home");
+  } else { toast("❌ Erro ao salvar."); }
+}
+
+// ── SCORE ───────────────────────────────
+async function calcScore() {
+  var pa = 0, med = 0, ci = 0, reg = 0;
+  var pav = vtls.filter(function(v){return v.systolic;}).slice(0,7);
+  if (pav.length > 0) {
+    var ok = pav.filter(function(v){return v.systolic<140 && v.diastolic<90;}).length;
+    pa = Math.round((ok/pav.length)*30);
+  }
+  var d7 = new Date(Date.now()-7*86400000).toISOString().split("T")[0];
+  var wa = await sbSelect("med_adherence","user_id=eq."+uid+"&date=gte."+d7);
+  wa = Array.isArray(wa) ? wa : [];
+  med = mds.length > 0 ? Math.min(30,Math.round((wa.length/(mds.length*7))*30)) : 15;
+  var m1 = new Date(); m1.setDate(1); m1.setHours(0,0,0,0);
+  var cid = await sbSelect("checkins","user_id=eq."+uid+"&created_at=gte."+m1.toISOString());
+  ci = Math.min(20, (Array.isArray(cid)?cid.length:0)*5);
+  var rgd = await sbSelect("vitals","user_id=eq."+uid+"&created_at=gte."+m1.toISOString()+"&select=id");
+  reg = Math.min(20, (Array.isArray(rgd)?rgd.length:0)*4);
+  var sc = pa+med+ci+reg;
+  var msg = sc>=80?"🏆 Excelente! Continue assim!":sc>=60?"👍 Bom progresso!":sc>=40?"💪 Você pode melhorar!":"🌱 Vamos começar!";
+  ["scv","scdv"].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent=sc;});
+  ["scb","scdb"].forEach(function(id){var e=document.getElementById(id);if(e)e.style.width=sc+"%";});
+  ["scm","scdm"].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent=msg;});
+  function sc2(id,v,mx){
+    var pct=Math.round((v/mx)*100);
+    var e=document.getElementById(id);if(e)e.style.width=pct+"%";
+    var ev=document.getElementById(id+"v");if(ev)ev.textContent=v+"/"+mx;
+  }
+  sc2("spa",pa,30);sc2("sme",med,30);sc2("sci",ci,20);sc2("srg",reg,20);
+}
+
+// ── NAVIGATION ──────────────────────────
+function go(id) {
+  var screens = document.querySelectorAll(".screen");
+  for (var i = 0; i < screens.length; i++) screens[i].classList.remove("active");
+  document.getElementById(id).classList.add("active");
+  var nm = {"s-home":0,"s-vitals":1,"s-plan":2,"s-meds":3,"s-exams":4};
+  var nis = document.querySelectorAll(".ni");
+  for (var i = 0; i < nis.length; i++) nis[i].classList.remove("on");
+  var idx = nm[id];
+  if (idx !== undefined && nis[idx]) nis[idx].classList.add("on");
+  if (id === "s-ci") { cis = 0; cias = {}; rCI(); }
+  if (id === "s-exams") ldExams();
+  if (id === "s-score") calcScore();
+}
+
+// ── TOAST ───────────────────────────────
+function toast(m) {
+  var t = document.getElementById("tst");
+  t.textContent = m; t.classList.add("show");
+  setTimeout(function(){t.classList.remove("show");}, 2800);
+}
+</script>
+</body>
+</html>
