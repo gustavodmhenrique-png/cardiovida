@@ -571,15 +571,21 @@ function renderMeds() {
     ? '<span class="ok">✓ Todos</span>'
     : '<span class="wn">'+(mds.length-tc)+" pendentes</span>";
   var html = mds.length === 0
-    ? '<div style="color:var(--muted);font-size:13px;text-align:center;padding:8px;">Adicione medicamentos abaixo.</div>'
+    ? "<div style='color:var(--muted);font-size:13px;text-align:center;padding:8px;'>Adicione medicamentos abaixo.</div>"
     : mds.map(function(m) {
         var done = tids.indexOf(m.id) >= 0;
-        return '<div class="mi">'
-          +'<div class="mdo" style="background:'+(m.color||"#1A5FA8")+'"></div>'
-          +'<div style="flex:1"><div class="mn">'+m.name+'</div><div class="ms">'+(m.dose||"")+'</div></div>'
-          +'<div class="mt">'+(m.time_of_day||"--")+'</div>'
-          +'<div class="mc'+(done?" done":"")+'" onclick="togM(''+m.id+'',this)">'+(done?"✓":"")+'</div>'
-          +'</div>';
+        var doneClass = done ? " done" : "";
+        var doneText = done ? "&#10003;" : "";
+        var bg = m.color || "#1A5FA8";
+        var dose = m.dose || "";
+        var hr = m.time_of_day || "--";
+        var mid = m.id;
+        return "<div class='mi'>"
+          + "<div class='mdo' style='background:" + bg + "'></div>"
+          + "<div style='flex:1'><div class='mn'>" + m.name + "</div><div class='ms'>" + dose + "</div></div>"
+          + "<div class='mt'>" + hr + "</div>"
+          + "<div class='mc" + doneClass + "' data-mid='" + mid + "' onclick='togM(this.dataset.mid,this)'>" + doneText + "</div>"
+          + "</div>";
       }).join("");
   document.getElementById("mhl").innerHTML = html;
   document.getElementById("mfl").innerHTML = html;
